@@ -8,7 +8,7 @@
 
 
     <EditText
-        android:id="@+id/editText14"
+        android:id="@+id/saveSavingName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -16,25 +16,26 @@
         android:text="@string/savingNamePlainText" />
 
     <EditText
-        android:id="@+id/editText13"
+        android:id="@+id/saveMonthlyAmount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:text="@string/savingMonthlyAmountPlainText" />
 
     <EditText
-        android:id="@+id/editText12"
+        android:id="@+id/saveDesiredAmount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:text="@string/savingDesiredAmountPlainText" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="shitfuck"
+        android:text="Save"
+        android:id="@+id/saveButton"
         android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

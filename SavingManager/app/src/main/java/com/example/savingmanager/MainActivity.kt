@@ -9,22 +9,37 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.example.savingmanager.ui.main.SectionsPagerAdapter
+import SavingManager
+import Saving
+import android.view.View
+import android.widget.Button
+
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var mySavingManager: SavingManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
-        val viewPager: ViewPager = findViewById(R.id.view_pager)
-        viewPager.adapter = sectionsPagerAdapter
-        val tabs: TabLayout = findViewById(R.id.tabs)
-        tabs.setupWithViewPager(viewPager)
-        val fab: FloatingActionButton = findViewById(R.id.fab)
+        mySavingManager=SavingManager()
+        mySavingManager.InitFileManager("saves.txt")
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        val saveButton:Button = findViewById(R.id.saveButton)
+            saveButton.setOnClickListener{
+            saveButtonOnClick()
+            var tempString:String = ""
+                for (string in mySavingManager.getAllData())
+                {
+                    tempString+= string
+                }
+                saveButton.text=tempString
         }
+
     }
+
+    fun saveButtonOnClick()
+    {
+
+    }
+
 }
