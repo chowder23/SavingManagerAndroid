@@ -6,7 +6,7 @@ import java.util.function.BooleanSupplier
 
 class Saving(private val savingId:Int, val name:String, val monthlySavingAmount:Double, val desiredAmmount:Double) {
     val savingStartDateTime = LocalDate.now()
-    private var elapsedMonths:Int = savingStartDateTime.monthValue.toInt() - LocalDateTime.now().monthValue.toInt()
+    private var elapsedMonths:Int = savingStartDateTime.monthValue - LocalDateTime.now().monthValue
     private var savedAmount:Double=0.0
 
     fun toSaveFormat():String{

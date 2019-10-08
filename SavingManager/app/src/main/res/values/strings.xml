@@ -2,4 +2,7 @@
     <string name="app_name">SavingManager</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="savingNamePlainText">Saving name</string>>
+    <string name="savingMonthlyAmountPlainText">Monthly amount</string>
+    <string name="savingDesiredAmountPlainText">Desired amount</string>
 </resources>
