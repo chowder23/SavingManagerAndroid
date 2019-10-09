@@ -2,7 +2,8 @@
     <string name="app_name">SavingManager</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
-    <string name="savingNamePlainText">Saving name</string>>
-    <string name="savingMonthlyAmountPlainText">0</string>
-    <string name="savingDesiredAmountPlainText">0</string>
+    <string name="editTextSavingName"></string>>
+    <string name="editTextSavingMonthlyAmount">0</string>
+    <string name="editTextDesiredAmount">0</string>
+    <string name="buttonTextMainActivityNewSaving">Add new saving</string>
 </resources>

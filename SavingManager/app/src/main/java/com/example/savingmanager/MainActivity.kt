@@ -11,10 +11,13 @@ import android.view.MenuItem
 import com.example.savingmanager.ui.main.SectionsPagerAdapter
 import SavingManager
 import Saving
+import android.content.Intent
+import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,30 +29,19 @@ class MainActivity : AppCompatActivity() {
         mySavingManager=SavingManager()
         mySavingManager.InitFileManager("saves.txt")
 
-        val saveButton:Button = findViewById(R.id.saveButton)
+        val newSaveActivity:Button = findViewById(R.id.buttonMainActivityAddNewSaving)
 
-        saveButton.setOnClickListener{
-            saveButtonOnClick()
-        }
-
-    }
-
-    fun saveButtonOnClick()
-    {
-        var saveName:EditText=findViewById(R.id.saveSavingName)
-        var saveMonthlyamount:EditText=findViewById(R.id.saveMonthlyAmount)
-        var saveDesiredAmount:EditText=findViewById(R.id.saveDesiredAmount)
-        try {
-            var monthlySave:Double=saveMonthlyamount.text.toString().toDouble()
-            var desiredAmount:Double=saveDesiredAmount.text.toString().toDouble()
-            mySavingManager.addNewSaving(saveName.text.toString(),saveMonthlyamount.text.toString().toDouble(),saveDesiredAmount.text.toString().toDouble())
-
-        }
-        catch(exp:Exception)
+        newSaveActivity.setOnClickListener()
         {
-            Toast.makeText(this,"Monthly amount and desired amount must be a number!",Toast.LENGTH_LONG).show()
-        }
+            val newSavingIntent = Intent(this,NewSavingPageActivity::class.java).apply {
+                putExtra(EXTRA_MESSAGE,"")
+            }
 
+            startActivity(newSavingIntent)
+        }
     }
 
 }
+
+
+
