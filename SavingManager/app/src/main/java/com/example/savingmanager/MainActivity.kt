@@ -14,6 +14,7 @@ import Saving
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,12 +30,6 @@ class MainActivity : AppCompatActivity() {
 
         saveButton.setOnClickListener{
             saveButtonOnClick()
-            var tempString:String = ""
-            for (string in mySavingManager.getAllData())
-            {
-                tempString+= string
-            }
-            saveButton.text=tempString
         }
 
     }
@@ -44,7 +39,17 @@ class MainActivity : AppCompatActivity() {
         var saveName:EditText=findViewById(R.id.saveSavingName)
         var saveMonthlyamount:EditText=findViewById(R.id.saveMonthlyAmount)
         var saveDesiredAmount:EditText=findViewById(R.id.saveDesiredAmount)
-        mySavingManager.addNewSaving(saveName.text.toString(),saveMonthlyamount.text.toString().toDouble(),saveDesiredAmount.text.toString().toDouble())
+        try {
+            var monthlySave:Double=saveMonthlyamount.text.toString().toDouble()
+            var desiredAmount:Double=saveDesiredAmount.text.toString().toDouble()
+            mySavingManager.addNewSaving(saveName.text.toString(),saveMonthlyamount.text.toString().toDouble(),saveDesiredAmount.text.toString().toDouble())
+
+        }
+        catch(exp:Exception)
+        {
+            Toast.makeText(this,"Monthly amount and desired amount must be a number!",Toast.LENGTH_LONG).show()
+        }
+
     }
 
 }
