@@ -13,6 +13,7 @@ import SavingManager
 import Saving
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,21 +26,25 @@ class MainActivity : AppCompatActivity() {
         mySavingManager.InitFileManager("saves.txt")
 
         val saveButton:Button = findViewById(R.id.saveButton)
-            saveButton.setOnClickListener{
+
+        saveButton.setOnClickListener{
             saveButtonOnClick()
             var tempString:String = ""
-                for (string in mySavingManager.getAllData())
-                {
-                    tempString+= string
-                }
-                saveButton.text=tempString
+            for (string in mySavingManager.getAllData())
+            {
+                tempString+= string
+            }
+            saveButton.text=tempString
         }
 
     }
 
     fun saveButtonOnClick()
     {
-
+        var saveName:EditText=findViewById(R.id.saveSavingName)
+        var saveMonthlyamount:EditText=findViewById(R.id.saveMonthlyAmount)
+        var saveDesiredAmount:EditText=findViewById(R.id.saveDesiredAmount)
+        mySavingManager.addNewSaving(saveName.text.toString(),saveMonthlyamount.text.toString().toDouble(),saveDesiredAmount.text.toString().toDouble())
     }
 
 }
