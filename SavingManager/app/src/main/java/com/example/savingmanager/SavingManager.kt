@@ -1,4 +1,6 @@
-class SavingManager {
+import java.io.Serializable
+
+class SavingManager:Serializable {
 
     private var mySalary:Double = 0.0
     var myFileManager = FileManager("BadBoy.txt")

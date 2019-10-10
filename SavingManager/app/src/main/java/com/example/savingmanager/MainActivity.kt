@@ -18,6 +18,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.Serializable
 
 
 class MainActivity : AppCompatActivity() {
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         newSaveActivity.setOnClickListener()
         {
             val newSavingIntent = Intent(this,NewSavingPageActivity::class.java).apply {
-                putExtra(EXTRA_MESSAGE,"")
+                putExtra("extra_object",mySavingManager as Serializable)
             }
 
             startActivity(newSavingIntent)
