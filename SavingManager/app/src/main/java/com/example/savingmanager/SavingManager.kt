@@ -1,4 +1,9 @@
+package com.example.savingmanager
+import com.example.savingmanager.ExistingSavingException
+import com.example.savingmanager.FileManagerNotInitException
 import java.io.Serializable
+import Saving
+
 
 class SavingManager:Serializable {
 
@@ -34,7 +39,7 @@ class SavingManager:Serializable {
     fun addNewSaving( name:String, monthlySavingAmount:Double, desiredAmount:Double)
     {
         val newSaving = Saving(nextId(),name,monthlySavingAmount,desiredAmount)
-        if(checkExistingSavingByName(newSaving)) throw Exception("Ez a megtakarítás: ${newSaving.name} már létezik!")
+        if(checkExistingSavingByName(newSaving)) throw ExistingSavingException(newSaving)
         else savings.add(newSaving)
     }
 
@@ -82,7 +87,7 @@ class SavingManager:Serializable {
 
     private fun checkInitialization()
     {
-        if(myFileManager.IsInitialized()) else throw Exception("File Manager hasn't been initialized yet!")
+        if(myFileManager.IsInitialized()) else throw FileManagerNotInitException()
     }
 
     fun Load()
@@ -114,3 +119,5 @@ class SavingManager:Serializable {
         return allData
     }
 }
+
+

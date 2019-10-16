@@ -1,14 +1,19 @@
+import android.view.ViewParent
+import java.io.Serializable
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.function.BooleanSupplier
 
-class Saving(private val savingId:Int, val name:String, val monthlySavingAmount:Double, val desiredAmmount:Double) {
-    val savingStartDateTime = LocalDate.now()
-    private var elapsedMonths:Int = savingStartDateTime.monthValue - LocalDateTime.now().monthValue
-    private var savedAmount:Double=0.0
+class Saving( var savingId:Int, var name:String, var monthlySavingAmount:Double, var desiredAmmount:Double):Serializable {
+    var savingStartDateTime =  DateTimeFormatter.ISO_INSTANT.format(Instant.now())
 
+    private var elapsedMonths:Int = savingStartDateTime.toString().substring(5,7).toInt() -
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString().substring(5,7).toInt()
+    private var savedAmount:Double=0.0
     fun toSaveFormat():String{
         return "$name|$monthlySavingAmount|$desiredAmmount|$savingStartDateTime"
     }

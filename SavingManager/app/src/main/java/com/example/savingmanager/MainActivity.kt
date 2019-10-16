@@ -9,9 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.example.savingmanager.ui.main.SectionsPagerAdapter
-import SavingManager
 import Saving
+import android.app.Activity
+import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.view.View
 import android.widget.Button
@@ -29,20 +34,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         mySavingManager=SavingManager()
         mySavingManager.InitFileManager("saves.txt")
-
         val newSaveActivity:Button = findViewById(R.id.buttonMainActivityAddNewSaving)
 
         newSaveActivity.setOnClickListener()
         {
-            val newSavingIntent = Intent(this,NewSavingPageActivity::class.java).apply {
-                putExtra("extra_object",mySavingManager as Serializable)
-            }
+            val newSavingIntent = Intent(this, NewSavingPageActivity::class.java).apply {
+                putExtra("extra_object", mySavingManager as Serializable)}
+
+
 
             startActivity(newSavingIntent)
+
+            mySavingManager= newSavingIntent.getSerializableExtra("extra_object") as SavingManager
         }
     }
-
 }
-
-
-

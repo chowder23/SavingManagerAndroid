@@ -1,6 +1,8 @@
+package com.example.savingmanager
 import java.io.File
+import java.io.Serializable
 
-class FileManager(private val fileName:String)
+class FileManager(private val fileName:String) :Serializable
 {
     private var myFile = File(fileName)
     private var initialized:Boolean = false
