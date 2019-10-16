@@ -38,7 +38,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
         db.close()
         return (Integer.parseInt("$_success") != -1)
     }
-    fun getTask(_id: Int): Saving {
+    fun getSaving(_id: Int): Saving {
         val saving:Saving= Saving(0,"",0.0,0.0)
         val db = writableDatabase
         val selectQuery = "SELECT  * FROM $TABLE_NAME WHERE $ID = $_id"
@@ -57,6 +57,32 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
         }
         cursor.close()
         return saving
+    }
+
+    fun getSavings():List<Saving>
+    {
+        var savings = mutableListOf<Saving>()
+        val db= writableDatabase
+        val SELECT_QUERY ="SELECT * FROM $TABLE_NAME"
+        val cursor = db.rawQuery(SELECT_QUERY,null)
+        if(cursor != null)
+        {
+            val saving:Saving= Saving(0,"",0.0,0.0)
+            while(cursor.moveToNext())
+            {
+                saving.savingId = Integer.parseInt(cursor.getString(cursor.getColumnIndex(SAVINGID)))
+                saving.name = cursor.getString(cursor.getColumnIndex(SAVINGNAME))
+                saving.monthlySavingAmount = cursor.getString(cursor.getColumnIndex(
+                    MONTHLYSAVINGAMOUNT)).toDouble()
+                saving.desiredAmmount = cursor.getString(cursor.getColumnIndex(DESIREDAMOUNT)).toDouble()
+                saving.savingStartDateTime =cursor.getString(cursor.getColumnIndex(
+                    SAVINGSTARTDATETIME))
+                savings.add(saving)
+            }
+        }
+
+
+        return savings
     }
 
     companion object {
