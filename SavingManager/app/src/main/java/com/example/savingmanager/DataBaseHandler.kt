@@ -27,7 +27,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
         onCreate(db)
     }
 
-    fun addTask(saving:Saving): Boolean {
+    fun addSaving(saving:Saving): Boolean {
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(SAVINGNAME, saving.name)
