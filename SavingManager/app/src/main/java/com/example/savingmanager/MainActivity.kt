@@ -28,9 +28,8 @@ import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var newSaveActivity: Button
-    lateinit var mySavingManager: SavingManager
-    lateinit var nextlayoutButton: Button
+    private lateinit var newSaveActivity: Button
+    private lateinit var mySavingManager: SavingManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,18 +37,7 @@ class MainActivity : AppCompatActivity() {
         mySavingManager.InitFileManager("saves.txt")
         newSaveActivity = findViewById(R.id.buttonMainActivityAddNewSaving)
 
-        nextlayoutButton = findViewById(R.id.buttonNewLayout)
 
-        nextlayoutButton.setOnClickListener()
-        {
-            setContentView(R.layout.second_layout)
-            val backButton: Button = findViewById(R.id.buttonBackToMain)
-
-            backButton.setOnClickListener()
-            {
-                setContentView(R.layout.activity_main)
-            }
-        }
         newSaveActivity.setOnClickListener()
         {
             val newSavingIntent = Intent(this, NewSavingPageActivity::class.java).apply {
