@@ -28,24 +28,40 @@ import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var newSaveActivity: Button
     lateinit var mySavingManager: SavingManager
+    lateinit var nextlayoutButton: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mySavingManager=SavingManager()
+        mySavingManager = SavingManager()
         mySavingManager.InitFileManager("saves.txt")
-        val newSaveActivity:Button = findViewById(R.id.buttonMainActivityAddNewSaving)
+        newSaveActivity = findViewById(R.id.buttonMainActivityAddNewSaving)
 
+        nextlayoutButton = findViewById(R.id.buttonNewLayout)
+
+        nextlayoutButton.setOnClickListener()
+        {
+            setContentView(R.layout.second_layout)
+            val backButton: Button = findViewById(R.id.buttonBackToMain)
+
+            backButton.setOnClickListener()
+            {
+                setContentView(R.layout.activity_main)
+            }
+        }
         newSaveActivity.setOnClickListener()
         {
             val newSavingIntent = Intent(this, NewSavingPageActivity::class.java).apply {
-                putExtra("extra_object", mySavingManager as Serializable)}
+                putExtra("extra_object", mySavingManager as Serializable)
+            }
 
 
 
             startActivity(newSavingIntent)
 
-            mySavingManager= newSavingIntent.getSerializableExtra("extra_object") as SavingManager
+            mySavingManager = newSavingIntent.getSerializableExtra("extra_object") as SavingManager
         }
     }
+
 }
