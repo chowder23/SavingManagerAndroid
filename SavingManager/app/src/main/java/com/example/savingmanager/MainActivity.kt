@@ -17,6 +17,7 @@ import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.icu.util.UniversalTimeScale
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.view.View
 import android.widget.Button
@@ -30,26 +31,17 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var newSaveActivity: Button
     lateinit var mySavingManager: SavingManager
-    lateinit var nextlayoutButton: Button
+    var actualContentView = R.layout.activity_main
+    lateinit var mainIntent:Intent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mainIntent=Intent(this,this::class.java)
         mySavingManager = SavingManager()
         mySavingManager.InitFileManager("saves.txt")
         newSaveActivity = findViewById(R.id.buttonMainActivityAddNewSaving)
 
-        nextlayoutButton = findViewById(R.id.buttonNewLayout)
 
-        nextlayoutButton.setOnClickListener()
-        {
-            setContentView(R.layout.second_layout)
-            val backButton: Button = findViewById(R.id.buttonBackToMain)
-
-            backButton.setOnClickListener()
-            {
-                setContentView(R.layout.activity_main)
-            }
-        }
         newSaveActivity.setOnClickListener()
         {
             val newSavingIntent = Intent(this, NewSavingPageActivity::class.java).apply {
@@ -64,4 +56,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun changeLayout(View:View)
+    {
+        if(actualContentView == R.layout.activity_main) {
+            setContentView(R.layout.second_layout)
+            startActivity(mainIntent)
+        }
+            else {
+            setContentView(R.layout.activity_main)
+            startActivity(mainIntent)
+        }
+    }
 }
