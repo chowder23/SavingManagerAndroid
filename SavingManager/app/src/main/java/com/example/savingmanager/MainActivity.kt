@@ -19,6 +19,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.icu.util.UniversalTimeScale
 import android.provider.AlarmClock.EXTRA_MESSAGE
+import android.text.Layout
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -31,40 +32,38 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var newSaveActivity: Button
     lateinit var mySavingManager: SavingManager
-    var actualContentView = R.layout.activity_main
     lateinit var mainIntent:Intent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.main_layout)
         mainIntent=Intent(this,this::class.java)
         mySavingManager = SavingManager()
         mySavingManager.InitFileManager("saves.txt")
         newSaveActivity = findViewById(R.id.buttonMainActivityAddNewSaving)
-
+        findViewById<View>(R.id.buildinvoice_step1_layout).visibility = View.VISIBLE
+        findViewById<View>(R.id.buildinvoice_step2_layout).visibility = View.INVISIBLE
+        val nextButton:Button = findViewById(R.id.buttonNewLayout)
+        val backButotn:Button = findViewById(R.id.buttonBackToMain)
+        nextButton.setOnClickListener()
+        {
+            findViewById<View>(R.id.buildinvoice_step1_layout).visibility = View.INVISIBLE
+            findViewById<View>(R.id.buildinvoice_step2_layout).visibility = View.VISIBLE
+        }
+        backButotn.setOnClickListener()
+        {
+            findViewById<View>(R.id.buildinvoice_step1_layout).visibility = View.VISIBLE
+            findViewById<View>(R.id.buildinvoice_step2_layout).visibility = View.INVISIBLE
+        }
 
         newSaveActivity.setOnClickListener()
         {
             val newSavingIntent = Intent(this, NewSavingPageActivity::class.java).apply {
                 putExtra("extra_object", mySavingManager as Serializable)
             }
-
-
-
             startActivity(newSavingIntent)
 
             mySavingManager = newSavingIntent.getSerializableExtra("extra_object") as SavingManager
         }
     }
 
-    fun changeLayout(View:View)
-    {
-        if(actualContentView == R.layout.activity_main) {
-            setContentView(R.layout.second_layout)
-            startActivity(mainIntent)
-        }
-            else {
-            setContentView(R.layout.activity_main)
-            startActivity(mainIntent)
-        }
-    }
 }
