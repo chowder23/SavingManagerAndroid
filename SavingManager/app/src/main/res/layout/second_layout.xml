@@ -3,17 +3,18 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
+    <ListView
+        android:id="@+id/listViewSecondLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="BIG TEEEXT"
-        android:textSize="50pt"/>
+        android:layout_height="638dp">
+
+    </ListView>
 
     <Button
         android:id="@+id/buttonBackToMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="changeLayout"
-        android:text="Back" />
+        android:text="Back"
+        />
 </LinearLayout>

@@ -42,8 +42,11 @@ class SavingManager:Serializable {
         if(checkExistingSavingByName(newSaving)) throw ExistingSavingException(newSaving)
         else savings.add(newSaving)
     }
-
-    private fun nextId():Int
+    fun addSaving(saving:Saving)
+    {
+        savings.add(saving)
+    }
+     fun nextId():Int
     {
         var nextId:Int =0
         for (saving in savings)

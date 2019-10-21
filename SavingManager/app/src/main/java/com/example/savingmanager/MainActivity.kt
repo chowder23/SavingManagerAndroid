@@ -21,9 +21,7 @@ import android.icu.util.UniversalTimeScale
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.text.Layout
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.Serializable
 
@@ -36,10 +34,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_layout)
+        var dataHandler = DatabaseHandler(this)
         mainIntent=Intent(this,this::class.java)
         mySavingManager = SavingManager()
         mySavingManager.InitFileManager("saves.txt")
         newSaveActivity = findViewById(R.id.buttonMainActivityAddNewSaving)
+        val lv = findViewById<ListView>(R.id.listViewSecondLayout)
+        val savingsAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1, mySavingManager.getAllData())
+        lv.adapter=savingsAdapter
         findViewById<View>(R.id.buildinvoice_step1_layout).visibility = View.VISIBLE
         findViewById<View>(R.id.buildinvoice_step2_layout).visibility = View.INVISIBLE
         val nextButton:Button = findViewById(R.id.buttonNewLayout)
@@ -48,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         {
             findViewById<View>(R.id.buildinvoice_step1_layout).visibility = View.INVISIBLE
             findViewById<View>(R.id.buildinvoice_step2_layout).visibility = View.VISIBLE
+            mySavingManager.addSaving(dataHandler.getSaving(0))
         }
         backButotn.setOnClickListener()
         {

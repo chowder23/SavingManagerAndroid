@@ -1,14 +1,14 @@
 package com.example.savingmanager
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.example.savingmanager.ExistingSavingException
-import com.example.savingmanager.FileManagerNotInitException
-import com.example.savingmanager.R
-class NewSavingPageActivity : AppCompatActivity() {
+import Saving
 
+class NewSavingPageActivity : AppCompatActivity() {
+    var dataHandler = DatabaseHandler(this)
     private lateinit var mySavingManager: SavingManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +31,16 @@ class NewSavingPageActivity : AppCompatActivity() {
         try {
             val monthlySave:Double=saveMonthlyAmount.text.toString().toDouble()
             val desiredAmount:Double=saveDesiredAmount.text.toString().toDouble()
+            val newSaving =
+                Saving(
+                    mySavingManager.nextId(),
+                    saveName.text.toString(),
+                    monthlySave,
+                    desiredAmount
+                )
             mySavingManager.addNewSaving(saveName.text.toString(),monthlySave,desiredAmount)
             done=true
-            Toast.makeText(this,mySavingManager.getAllData().toString(),Toast.LENGTH_LONG).show()
+            dataHandler.addSaving(newSaving)
 
         }
         catch(exp:Exception)
