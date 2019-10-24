@@ -8,7 +8,6 @@ import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import com.example.savingmanager.ui.main.SectionsPagerAdapter
 import Saving
 import android.app.Activity
 import android.content.ContentValues
@@ -28,45 +27,39 @@ import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var newSaveActivity: Button
-    lateinit var mySavingManager: SavingManager
-    lateinit var mainIntent:Intent
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_layout)
-        var dataHandler = DatabaseHandler(this)
-        mainIntent=Intent(this,this::class.java)
-        mySavingManager = SavingManager()
-        mySavingManager.InitFileManager("saves.txt")
-        newSaveActivity = findViewById(R.id.buttonMainActivityAddNewSaving)
-        val lv = findViewById<ListView>(R.id.listViewSecondLayout)
-        val savingsAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1, mySavingManager.getAllData())
-        lv.adapter=savingsAdapter
-        findViewById<View>(R.id.buildinvoice_step1_layout).visibility = View.VISIBLE
-        findViewById<View>(R.id.buildinvoice_step2_layout).visibility = View.INVISIBLE
-        val nextButton:Button = findViewById(R.id.buttonNewLayout)
-        val backButotn:Button = findViewById(R.id.buttonBackToMain)
-        nextButton.setOnClickListener()
-        {
-            findViewById<View>(R.id.buildinvoice_step1_layout).visibility = View.INVISIBLE
-            findViewById<View>(R.id.buildinvoice_step2_layout).visibility = View.VISIBLE
-            mySavingManager.addSaving(dataHandler.getSaving(0))
-        }
-        backButotn.setOnClickListener()
-        {
-            findViewById<View>(R.id.buildinvoice_step1_layout).visibility = View.VISIBLE
-            findViewById<View>(R.id.buildinvoice_step2_layout).visibility = View.INVISIBLE
-        }
+        setContentView(R.layout.activity_main)
+        layoutInit()
 
-        newSaveActivity.setOnClickListener()
-        {
-            val newSavingIntent = Intent(this, NewSavingPageActivity::class.java).apply {
-                putExtra("extra_object", dataHandler as Serializable)
-            }
-            startActivity(newSavingIntent)
 
-            mySavingManager = newSavingIntent.getSerializableExtra("extra_object") as SavingManager
-        }
+
     }
+
+    fun layoutInit()
+    {
+        findViewById<View>(R.id.layoutMain).visibility = View.VISIBLE
+        findViewById<View>(R.id.layoutShowAllSaving).visibility =View.INVISIBLE
+        findViewById<View>(R.id.layoutAddNewSaving).visibility =View.INVISIBLE
+    }
+
+    fun changeToAddSavingLayout(view:View)
+    {
+        findViewById<View>(R.id.layoutMain).visibility = View.INVISIBLE
+        findViewById<View>(R.id.layoutAddNewSaving).visibility =View.VISIBLE
+    }
+
+    fun changeToShowAllSavingLayout(view:View)
+    {
+        findViewById<View>(R.id.layoutMain).visibility = View.INVISIBLE
+        findViewById<View>(R.id.layoutShowAllSaving).visibility =View.VISIBLE
+    }
+
+    fun changeToMainLayout(view: View)
+    {
+        layoutInit()
+    }
+
 
 }

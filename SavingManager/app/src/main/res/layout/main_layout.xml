@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    android:id="@+id/frameLayout1"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <include
-        android:id="@+id/buildinvoice_step1_layout"
-        layout="@layout/activity_main"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
 
-    <include
-        android:id="@+id/buildinvoice_step2_layout"
-        android:layout_width="fill_parent"
-        layout="@layout/second_layout"
-        android:layout_height="fill_parent" />
-</FrameLayout>
+    <Button
+        android:id="@+id/buttonChangeToAddNew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="changeToAddSavingLayout"
+        android:text="Add new saving"
+        app:layout_constraintBottom_toTopOf="@+id/buttonShowAllSaving"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonShowAllSaving"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="changeToShowAllSavingLayout"
+        android:text="Show all saving"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

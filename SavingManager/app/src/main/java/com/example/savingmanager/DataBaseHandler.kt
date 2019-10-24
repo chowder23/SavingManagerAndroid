@@ -27,6 +27,25 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
         onCreate(db)
     }
 
+    fun createTable()
+    {
+        var db = this.writableDatabase
+        val createTableSQL= "CREATE TABLE $TABLE_NAME ( " +
+                "$SAVINGID INTEGER PRIMARY KEY, " +
+                "$SAVINGNAME TEXT ," +
+                "$MONTHLYSAVINGAMOUNT TEXT , " +
+                "$DESIREDAMOUNT TEXT, " +
+                "$SAVINGSTARTDATETIME TEXT )"
+        db.execSQL(createTableSQL)
+        db.close()
+    }
+
+    fun dropTable()
+    {
+        var db = this.writableDatabase
+        db.execSQL("DROP TABLE $TABLE_NAME")
+        db.close()
+    }
     fun addSaving(saving:Saving): Boolean {
         val db = this.writableDatabase
         val values = ContentValues()
