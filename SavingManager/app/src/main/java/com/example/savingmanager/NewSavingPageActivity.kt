@@ -13,7 +13,7 @@ class NewSavingPageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_saving_page)
-        mySavingManager=intent.getSerializableExtra("extra_object") as SavingManager
+        dataHandler=intent.getSerializableExtra("extra_object") as DatabaseHandler
 
         val saveButton:Button=findViewById(R.id.buttonAddNewSaving)
         saveButton.setOnClickListener()
@@ -38,7 +38,7 @@ class NewSavingPageActivity : AppCompatActivity() {
                     monthlySave,
                     desiredAmount
                 )
-            mySavingManager.addNewSaving(saveName.text.toString(),monthlySave,desiredAmount)
+            //mySavingManager.addNewSaving(saveName.text.toString(),monthlySave,desiredAmount)
             done=true
             dataHandler.addSaving(newSaving)
 

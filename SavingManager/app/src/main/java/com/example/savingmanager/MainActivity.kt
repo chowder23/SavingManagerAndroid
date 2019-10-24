@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         newSaveActivity.setOnClickListener()
         {
             val newSavingIntent = Intent(this, NewSavingPageActivity::class.java).apply {
-                putExtra("extra_object", mySavingManager as Serializable)
+                putExtra("extra_object", dataHandler as Serializable)
             }
             startActivity(newSavingIntent)
 
