@@ -36,12 +36,6 @@ class SavingManager:Serializable {
         myFileManager.setMyFile(fileName)
     }
 
-    fun addNewSaving( name:String, monthlySavingAmount:Double, desiredAmount:Double)
-    {
-        val newSaving = Saving(nextId(),name,monthlySavingAmount,desiredAmount)
-        if(checkExistingSavingByName(newSaving)) throw ExistingSavingException(newSaving)
-        else savings.add(newSaving)
-    }
     fun addSaving(saving:Saving)
     {
         savings.add(saving)
@@ -93,15 +87,6 @@ class SavingManager:Serializable {
         if(myFileManager.IsInitialized()) else throw FileManagerNotInitException()
     }
 
-    fun Load()
-    {
-        checkInitialization()
-        for (line in myFileManager.loadDataFromFile())
-        {
-            var splittedLine = line.split('|')
-            addNewSaving(splittedLine[0],splittedLine[1].toDouble(),splittedLine[2].toDouble())
-        }
-    }
 
     fun addAmountToSaving(savingName:String,amount:Double)
     {

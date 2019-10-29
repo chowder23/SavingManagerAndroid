@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.function.BooleanSupplier
 
-class Saving( var savingId:Int, var name:String, var monthlySavingAmount:Double, var desiredAmmount:Double):Serializable {
+class Saving( var name:String, var monthlySavingAmount:Double, var desiredAmmount:Double, var savingId:Int=0):Serializable {
     var savingStartDateTime =  DateTimeFormatter.ISO_INSTANT.format(Instant.now())
 
     private var elapsedMonths:Int = savingStartDateTime.toString().substring(5,7).toInt() -

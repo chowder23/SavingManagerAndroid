@@ -18,6 +18,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.icu.util.UniversalTimeScale
 import android.provider.AlarmClock.EXTRA_MESSAGE
+import android.text.Editable
 import android.text.Layout
 import android.view.View
 import android.widget.*
@@ -27,12 +28,12 @@ import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
 
-
+    val dbHandler:DatabaseHandler = DatabaseHandler(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         layoutInit()
-
+        dbHandler.init()
 
 
     }
@@ -54,6 +55,30 @@ class MainActivity : AppCompatActivity() {
     {
         findViewById<View>(R.id.layoutMain).visibility = View.INVISIBLE
         findViewById<View>(R.id.layoutShowAllSaving).visibility =View.VISIBLE
+        var layoutAllSaving:ListView = findViewById(R.id.listViewShowAllHuman)
+        layoutAllSaving.adapter=ArrayAdapter(this, android.R.layout.simple_list_item_1,dbHandler.getSavings())
+    }
+
+    fun addNewSaving(view:View)
+    {
+        val savingName = findViewById<EditText>(R.id.editTextSavingName).text.toString()
+        val monthlySavingAmount:Double = findViewById<EditText>(R.id.editTextSavingMonthlyAmount).text.toString().toDouble()
+        val desiredamount = findViewById<EditText>(R.id.editTextSavingDesiredAmount).text.toString().toDouble()
+        val saving = Saving(savingName,monthlySavingAmount,desiredamount)
+        findViewById<EditText>(R.id.editTextSavingName).text = "".toEditable()
+        findViewById<EditText>(R.id.editTextSavingMonthlyAmount).text = "".toEditable()
+        findViewById<EditText>(R.id.editTextSavingDesiredAmount).text = "".toEditable()
+        var succes = dbHandler.addSaving(saving)
+        showToast("$succes")
+
+    }
+
+    fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
+
+    fun showToast(message:String)
+    {
+        Toast.makeText(this,message,Toast.LENGTH_LONG).show()
+
     }
 
     fun changeToMainLayout(view: View)

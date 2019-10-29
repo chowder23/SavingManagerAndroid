@@ -13,18 +13,36 @@ import java.util.*
 
 class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHandler.DB_NAME, null, DatabaseHandler.DB_VERSION) {
 
+    private var initalized = false
     override fun onCreate(db: SQLiteDatabase) {
         val CREATE_TABLE = "CREATE TABLE $TABLE_NAME (" +
                 SAVINGID + " INTEGER PRIMARY KEY," +
                 SAVINGNAME + " TEXT," + MONTHLYSAVINGAMOUNT + " INTEGER," +
                 DESIREDAMOUNT + " INTEGER," + SAVINGSTARTDATETIME + " TEXT);"
         db.execSQL(CREATE_TABLE)
+        initalized=true
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         val DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME
         db.execSQL(DROP_TABLE)
         onCreate(db)
+    }
+
+    fun init()
+    {
+        if(!initalized) {
+            var db = this.writableDatabase
+            db.execSQL("DROP TABLE $TABLE_NAME")
+            val createTableSQL= "CREATE TABLE $TABLE_NAME ( " +
+                    "$SAVINGID INTEGER PRIMARY KEY, " +
+                    "$SAVINGNAME TEXT ," +
+                    "$MONTHLYSAVINGAMOUNT TEXT , " +
+                    "$DESIREDAMOUNT TEXT, " +
+                    "$SAVINGSTARTDATETIME TEXT )"
+            db.execSQL(createTableSQL)
+            db.close()
+        }
     }
 
     fun createTable()
@@ -38,6 +56,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
                 "$SAVINGSTARTDATETIME TEXT )"
         db.execSQL(createTableSQL)
         db.close()
+        initalized=true
     }
 
     fun dropTable()
@@ -45,6 +64,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
         var db = this.writableDatabase
         db.execSQL("DROP TABLE $TABLE_NAME")
         db.close()
+        initalized=false
     }
     fun addSaving(saving:Saving): Boolean {
         val db = this.writableDatabase
@@ -58,7 +78,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
         return (Integer.parseInt("$_success") != -1)
     }
     fun getSaving(_id: Int): Saving {
-        val saving:Saving= Saving(0,"",0.0,0.0)
+        val saving:Saving= Saving("",0.0,0.0)
         val db = writableDatabase
         val selectQuery = "SELECT  * FROM $TABLE_NAME WHERE $ID = $_id"
         val cursor = db.rawQuery(selectQuery, null)
@@ -86,7 +106,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
         val cursor = db.rawQuery(SELECT_QUERY,null)
         if(cursor != null)
         {
-            val saving:Saving= Saving(0,"",0.0,0.0)
+            val saving:Saving= Saving("",0.0,0.0)
             while(cursor.moveToNext())
             {
                 saving.savingId = Integer.parseInt(cursor.getString(cursor.getColumnIndex(SAVINGID)))
