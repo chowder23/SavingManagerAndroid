@@ -6,43 +6,24 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.os.Build.ID
 import Saving
-import java.text.DateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.*
+
 
 class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHandler.DB_NAME, null, DatabaseHandler.DB_VERSION) {
 
-    private var initalized = false
     override fun onCreate(db: SQLiteDatabase) {
         val CREATE_TABLE = "CREATE TABLE $TABLE_NAME (" +
                 SAVINGID + " INTEGER PRIMARY KEY," +
-                SAVINGNAME + " TEXT," + MONTHLYSAVINGAMOUNT + " INTEGER," +
-                DESIREDAMOUNT + " INTEGER," + SAVINGSTARTDATETIME + " TEXT);"
+                SAVINGNAME + " TEXT," +
+                MONTHLYSAVINGAMOUNT + " INTEGER," +
+                DESIREDAMOUNT + " INTEGER," +
+                SAVINGSTARTDATETIME + " TEXT);"
         db.execSQL(CREATE_TABLE)
-        initalized=true
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         val DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME
         db.execSQL(DROP_TABLE)
         onCreate(db)
-    }
-
-    fun init()
-    {
-        if(!initalized) {
-            var db = this.writableDatabase
-            db.execSQL("DROP TABLE $TABLE_NAME")
-            val createTableSQL= "CREATE TABLE $TABLE_NAME ( " +
-                    "$SAVINGID INTEGER PRIMARY KEY, " +
-                    "$SAVINGNAME TEXT ," +
-                    "$MONTHLYSAVINGAMOUNT TEXT , " +
-                    "$DESIREDAMOUNT TEXT, " +
-                    "$SAVINGSTARTDATETIME TEXT )"
-            db.execSQL(createTableSQL)
-            db.close()
-        }
     }
 
     fun createTable()
@@ -56,7 +37,6 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
                 "$SAVINGSTARTDATETIME TEXT )"
         db.execSQL(createTableSQL)
         db.close()
-        initalized=true
     }
 
     fun dropTable()
@@ -64,9 +44,10 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
         var db = this.writableDatabase
         db.execSQL("DROP TABLE $TABLE_NAME")
         db.close()
-        initalized=false
     }
     fun addSaving(saving:Saving): Boolean {
+        if(!checkSave(saving))
+            return false
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(SAVINGNAME, saving.name)
@@ -120,8 +101,18 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
             }
         }
 
-
         return savings
+    }
+
+    fun checkSave(saving:Saving):Boolean
+    {
+        var savings = getSavings()
+        for (tmpSaving in savings)
+        {
+            if(tmpSaving.name.toLowerCase() == saving.name.toLowerCase())
+                return false
+        }
+        return true
     }
 
     companion object {

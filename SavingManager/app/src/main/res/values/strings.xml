@@ -6,4 +6,7 @@
     <string name="editTextSavingMonthlyAmount">0</string>
     <string name="editTextDesiredAmount">0</string>
     <string name="buttonTextMainActivityNewSaving">Add new saving</string>
+    <string name="editTextProfileName"></string>
+    <string name="editTextProfileSalary"></string>
+    <string name="textViewProfileInfo"></string>
 </resources>

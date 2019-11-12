@@ -29,13 +29,38 @@ import java.io.Serializable
 class MainActivity : AppCompatActivity() {
 
     val dbHandler:DatabaseHandler = DatabaseHandler(this)
+    var myProfile = Profile("",0.0)
+    var profileDB = ProfileDbHandler(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        startProfileActivity()
         layoutInit()
-        dbHandler.init()
+    }
 
+    fun startProfileActivity()
+    {
+        var profiles = profileDB.getProfiles()
+        if(profiles.isEmpty()) {
+            var intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+        else
+        {
+            myProfile = profiles[0]
+            actualizeSalary()
+        }
 
+    }
+
+    fun actualizeSalary()
+    {
+        var savings = dbHandler.getSavings()
+        for(saving in savings)
+        {
+            myProfile.salary-=saving.monthlySavingAmount
+        }
+        findViewById<TextView>(R.id.textViewProfileInfo).text = myProfile.toString()
     }
 
     fun layoutInit()
@@ -69,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<EditText>(R.id.editTextSavingMonthlyAmount).text = "".toEditable()
         findViewById<EditText>(R.id.editTextSavingDesiredAmount).text = "".toEditable()
         var succes = dbHandler.addSaving(saving)
-        showToast("$succes")
+        showToast(if(succes) "Saving added" else "Can't add saving")
 
     }
 

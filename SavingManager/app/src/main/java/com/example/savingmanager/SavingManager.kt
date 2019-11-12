@@ -31,11 +31,6 @@ class SavingManager:Serializable {
         return tmpSalary.toInt()
     }
 
-    fun InitFileManager(fileName:String)
-    {
-        myFileManager.setMyFile(fileName)
-    }
-
     fun addSaving(saving:Saving)
     {
         savings.add(saving)
@@ -66,11 +61,6 @@ class SavingManager:Serializable {
         return savingsNames
     }
 
-    fun Save()
-    {
-        checkInitialization()
-        myFileManager.saveDataToFile(getSavingsAsString())
-    }
 
     private fun getSavingsAsString():List<String>
     {
@@ -80,11 +70,6 @@ class SavingManager:Serializable {
             savingsAsString.add(saving.toSaveFormat())
         }
         return savingsAsString
-    }
-
-    private fun checkInitialization()
-    {
-        if(myFileManager.IsInitialized()) else throw FileManagerNotInitException()
     }
 
 

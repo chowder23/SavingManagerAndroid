@@ -1,37 +1,36 @@
 package com.example.savingmanager
 import java.io.File
 import java.io.Serializable
+import android.content.Context
+import android.os.Environment
 
-class FileManager(private val fileName:String) :Serializable
+
+class FileManager(private val fileName:String)
 {
-    private var myFile = File(fileName)
-    private var initialized:Boolean = false
+    var filePath = Environment.getExternalStorageDirectory().absolutePath + "profile.txt"
+    private var myFile = File(filePath)
 
-    fun setMyFile(fileName:String)
+    fun init()
     {
-        myFile= File(fileName)
-        initialized=true
+
+        myFile.createNewFile()
     }
-    fun IsInitialized():Boolean
+    fun saveMyProfile(myProfile:Profile)
     {
-        return initialized
-    }
-    fun saveDataToFile(savingsStrings:List<String>)
-    {
-        myFile.delete()
-        for (savingString in savingsStrings)
-        {
-            myFile.appendText("$savingString\n")
-        }
+        myFile.writeText(myProfile.toString())
+
     }
 
-    fun loadDataFromFile():List<String>
+    fun loadMyProfile():Profile
     {
-        var savingsStrings = mutableListOf<String>()
-        for (line in myFile.readLines())
-        {
-            savingsStrings.add(line)
-        }
-        return savingsStrings
+        var unParsedString = myFile.readText()
+        var parsedString = unParsedString.split('|')
+        return (Profile(parsedString[0],parsedString[1].toDouble()))
+    }
+
+    fun checkForProfile():Boolean
+    {
+        return myFile.readLines().count() == 0
+
     }
 }
