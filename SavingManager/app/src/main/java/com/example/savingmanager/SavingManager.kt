@@ -8,7 +8,6 @@ import Saving
 class SavingManager:Serializable {
 
     private var mySalary:Double = 0.0
-    var myFileManager = FileManager("BadBoy.txt")
     var savings = mutableListOf<Saving>()
 
     fun setMySalary(salary:Double)

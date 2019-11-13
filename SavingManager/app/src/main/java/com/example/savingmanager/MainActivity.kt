@@ -23,7 +23,9 @@ import android.text.Layout
 import android.view.View
 import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.all_saving_layout.*
 import java.io.Serializable
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -31,11 +33,49 @@ class MainActivity : AppCompatActivity() {
     val dbHandler:DatabaseHandler = DatabaseHandler(this)
     var myProfile = Profile("",0.0)
     var profileDB = ProfileDbHandler(this)
+    lateinit var listSaving:List<Saving>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        listSaving = dbHandler.getSavings()
         setContentView(R.layout.activity_main)
         startProfileActivity()
         layoutInit()
+        RefreshData()
+
+        buttonSave.setOnClickListener {
+            val saving = Saving(
+                editTextSavingName.text.toString(),
+                editTextMonthlyAmount.text.toString().toDouble(),
+                editTextDesiredAmount.text.toString().toDouble(),
+                Integer.parseInt(textViewSavingId.text.toString())
+
+            )
+            showToast(dbHandler.addSaving(saving).toString())
+            RefreshData()
+        }
+
+        buttonUpdate.setOnClickListener {
+            val saving = Saving(
+                editTextSavingName.text.toString(),
+                editTextMonthlyAmount.text.toString().toDouble(),
+                editTextDesiredAmount.text.toString().toDouble(),
+                Integer.parseInt(textViewSavingId.text.toString())
+            )
+            showToast(dbHandler.updateSaving(saving).toString())
+            RefreshData()
+        }
+
+        buttonDelete.setOnClickListener {
+            val saving = Saving(
+                editTextSavingName.text.toString(),
+                editTextMonthlyAmount.text.toString().toDouble(),
+                editTextDesiredAmount.text.toString().toDouble(),
+                Integer.parseInt(textViewSavingId.text.toString())
+            )
+            dbHandler.deleteSaving(saving)
+            RefreshData()
+        }
+
     }
 
     fun startProfileActivity()
@@ -53,6 +93,14 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun RefreshData()
+    {
+        listSaving = dbHandler.getSavings()
+        val adapter = ListSavingAdapter(this@MainActivity,listSaving,
+            editTextSavingName,editTextSavingAmount,editTextMonthlyAmount,editTextDesiredAmount,textViewSavingId)
+        listViewAllSaving.adapter=adapter
+
+    }
     fun actualizeSalary()
     {
         var savings = dbHandler.getSavings()
@@ -80,8 +128,8 @@ class MainActivity : AppCompatActivity() {
     {
         findViewById<View>(R.id.layoutMain).visibility = View.INVISIBLE
         findViewById<View>(R.id.layoutShowAllSaving).visibility =View.VISIBLE
-        var layoutAllSaving:ListView = findViewById(R.id.listViewShowAllHuman)
-        layoutAllSaving.adapter=ArrayAdapter(this, android.R.layout.simple_list_item_1,dbHandler.getSavings())
+        //var layoutAllSaving:ListView = findViewById(R.id.listViewAllSaving)
+       // layoutAllSaving.adapter=ArrayAdapter(this, android.R.layout.simple_list_item_1,dbHandler.getSavings())
     }
 
     fun addNewSaving(view:View)

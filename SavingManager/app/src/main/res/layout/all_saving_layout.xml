@@ -1,13 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="500dp"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/listViewShowAllHuman"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="500dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewSavingId"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:paddingLeft="10dp"
+                android:text="" />
+
+            <EditText
+                android:id="@+id/editTextSavingName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:hint="Saving Name">
+            </EditText>
+            <EditText
+                android:id="@+id/editTextSavingAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Saving amount">
+            </EditText>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editTextMonthlyAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:hint="Monthly amount">
+            </EditText>
+            <EditText
+                android:id="@+id/editTextDesiredAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:hint="Desired amount">
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save">
+
+            </Button>
+
+            <Button
+                android:id="@+id/buttonUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Update">
+
+            </Button>
+
+            <Button
+                android:id="@+id/buttonDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete">
+
+            </Button>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listViewAllSaving"
+        android:layout_width="match_parent"
+        android:choiceMode="singleChoice"
+        android:layout_height="470dp">
 
     </ListView>
 

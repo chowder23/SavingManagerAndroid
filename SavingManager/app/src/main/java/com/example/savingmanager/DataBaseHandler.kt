@@ -45,6 +45,28 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
         db.execSQL("DROP TABLE $TABLE_NAME")
         db.close()
     }
+
+    fun deleteSaving(saving:Saving)
+    {
+        var db=this.writableDatabase
+        db.delete(TABLE_NAME,"$SAVINGID=?", arrayOf(saving.getId().toString()))
+        db.close()
+
+    }
+
+    fun updateSaving(saving:Saving):Boolean
+    {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(SAVINGNAME, saving.name)
+        values.put(MONTHLYSAVINGAMOUNT,saving.monthlySavingAmount)
+        values.put(DESIREDAMOUNT,saving.desiredAmmount)
+        values.put (SAVINGSTARTDATETIME,saving.savingStartDateTime.toString())
+        val _success = db.update(TABLE_NAME, values, "$SAVINGID=?", arrayOf(saving.getId().toString()))
+        db.close()
+        return (Integer.parseInt("$_success") != -1)
+    }
+
     fun addSaving(saving:Saving): Boolean {
         if(!checkSave(saving))
             return false
@@ -87,9 +109,10 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
         val cursor = db.rawQuery(SELECT_QUERY,null)
         if(cursor != null)
         {
-            val saving:Saving= Saving("",0.0,0.0)
+
             while(cursor.moveToNext())
             {
+                var saving:Saving= Saving("",0.0,0.0)
                 saving.savingId = Integer.parseInt(cursor.getString(cursor.getColumnIndex(SAVINGID)))
                 saving.name = cursor.getString(cursor.getColumnIndex(SAVINGNAME))
                 saving.monthlySavingAmount = cursor.getString(cursor.getColumnIndex(
