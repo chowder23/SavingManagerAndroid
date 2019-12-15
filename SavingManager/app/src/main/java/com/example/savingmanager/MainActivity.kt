@@ -42,25 +42,17 @@ class MainActivity : AppCompatActivity() {
         layoutInit()
         RefreshData()
 
-        buttonSave.setOnClickListener {
-            val saving = Saving(
-                editTextSavingName.text.toString(),
-                editTextMonthlyAmount.text.toString().toDouble(),
-                editTextDesiredAmount.text.toString().toDouble(),
-                Integer.parseInt(textViewSavingId.text.toString())
-
-            )
-            showToast(dbHandler.addSaving(saving).toString())
-            RefreshData()
-        }
 
         buttonUpdate.setOnClickListener {
             val saving = Saving(
                 editTextSavingName.text.toString(),
                 editTextMonthlyAmount.text.toString().toDouble(),
                 editTextDesiredAmount.text.toString().toDouble(),
-                Integer.parseInt(textViewSavingId.text.toString())
+                Integer.parseInt(textViewSavingId.text.toString()),
+                editTextSavingAmount.text.toString().toDouble()
+
             )
+
             showToast(dbHandler.updateSaving(saving).toString())
             RefreshData()
         }
@@ -97,7 +89,11 @@ class MainActivity : AppCompatActivity() {
     {
         listSaving = dbHandler.getSavings()
         val adapter = ListSavingAdapter(this@MainActivity,listSaving,
-            editTextSavingName,editTextSavingAmount,editTextMonthlyAmount,editTextDesiredAmount,textViewSavingId)
+            editTextSavingName,
+            editTextSavingAmount,
+            editTextMonthlyAmount,
+            editTextDesiredAmount,
+            textViewSavingId)
         listViewAllSaving.adapter=adapter
 
     }
@@ -128,17 +124,19 @@ class MainActivity : AppCompatActivity() {
     {
         findViewById<View>(R.id.layoutMain).visibility = View.INVISIBLE
         findViewById<View>(R.id.layoutShowAllSaving).visibility =View.VISIBLE
+        RefreshData()
+
         //var layoutAllSaving:ListView = findViewById(R.id.listViewAllSaving)
        // layoutAllSaving.adapter=ArrayAdapter(this, android.R.layout.simple_list_item_1,dbHandler.getSavings())
     }
 
     fun addNewSaving(view:View)
     {
-        val savingName = findViewById<EditText>(R.id.editTextSavingName).text.toString()
+        val savingName = findViewById<EditText>(R.id.editTextSavingNameAdd).text.toString()
         val monthlySavingAmount:Double = findViewById<EditText>(R.id.editTextSavingMonthlyAmount).text.toString().toDouble()
         val desiredamount = findViewById<EditText>(R.id.editTextSavingDesiredAmount).text.toString().toDouble()
         val saving = Saving(savingName,monthlySavingAmount,desiredamount)
-        findViewById<EditText>(R.id.editTextSavingName).text = "".toEditable()
+        findViewById<EditText>(R.id.editTextSavingNameAdd).text = "".toEditable()
         findViewById<EditText>(R.id.editTextSavingMonthlyAmount).text = "".toEditable()
         findViewById<EditText>(R.id.editTextSavingDesiredAmount).text = "".toEditable()
         var succes = dbHandler.addSaving(saving)

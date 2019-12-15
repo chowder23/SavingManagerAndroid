@@ -11,12 +11,13 @@ import Saving
 class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHandler.DB_NAME, null, DatabaseHandler.DB_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase) {
-        val CREATE_TABLE = "CREATE TABLE $TABLE_NAME (" +
-                SAVINGID + " INTEGER PRIMARY KEY," +
-                SAVINGNAME + " TEXT," +
-                MONTHLYSAVINGAMOUNT + " INTEGER," +
-                DESIREDAMOUNT + " INTEGER," +
-                SAVINGSTARTDATETIME + " TEXT);"
+        val CREATE_TABLE = "CREATE TABLE $TABLE_NAME ( " +
+                "$SAVINGID INTEGER PRIMARY KEY, " +
+                "$SAVINGNAME TEXT ," +
+                "$MONTHLYSAVINGAMOUNT TEXT , " +
+                "$DESIREDAMOUNT TEXT, " +
+                "$SAVINGAMOUNT TEXT, " +
+                "$SAVINGSTARTDATETIME TEXT )"
         db.execSQL(CREATE_TABLE)
     }
 
@@ -34,6 +35,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
                 "$SAVINGNAME TEXT ," +
                 "$MONTHLYSAVINGAMOUNT TEXT , " +
                 "$DESIREDAMOUNT TEXT, " +
+                "$SAVINGAMOUNT TEXT, " +
                 "$SAVINGSTARTDATETIME TEXT )"
         db.execSQL(createTableSQL)
         db.close()
@@ -61,6 +63,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
         values.put(SAVINGNAME, saving.name)
         values.put(MONTHLYSAVINGAMOUNT,saving.monthlySavingAmount)
         values.put(DESIREDAMOUNT,saving.desiredAmmount)
+        values.put(SAVINGAMOUNT,saving.getSavingAmount())
         values.put (SAVINGSTARTDATETIME,saving.savingStartDateTime.toString())
         val _success = db.update(TABLE_NAME, values, "$SAVINGID=?", arrayOf(saving.getId().toString()))
         db.close()
@@ -75,6 +78,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
         values.put(SAVINGNAME, saving.name)
         values.put(MONTHLYSAVINGAMOUNT,saving.monthlySavingAmount)
         values.put(DESIREDAMOUNT,saving.desiredAmmount)
+        values.put(SAVINGAMOUNT,saving.getSavingAmount())
         values.put (SAVINGSTARTDATETIME,saving.savingStartDateTime.toString())
         val _success = db.insert(TABLE_NAME, null, values)
         db.close()
@@ -92,6 +96,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
                 saving.name = cursor.getString(cursor.getColumnIndex(SAVINGNAME))
                 saving.monthlySavingAmount = cursor.getString(cursor.getColumnIndex(
                     MONTHLYSAVINGAMOUNT)).toDouble()
+                saving.addToSavedAmount(cursor.getString(cursor.getColumnIndex(SAVINGAMOUNT)).toDouble())
                 saving.desiredAmmount = cursor.getString(cursor.getColumnIndex(DESIREDAMOUNT)).toDouble()
                 saving.savingStartDateTime =cursor.getString(cursor.getColumnIndex(
                     SAVINGSTARTDATETIME))
@@ -117,6 +122,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
                 saving.name = cursor.getString(cursor.getColumnIndex(SAVINGNAME))
                 saving.monthlySavingAmount = cursor.getString(cursor.getColumnIndex(
                     MONTHLYSAVINGAMOUNT)).toDouble()
+                saving.SavingStartAmount= cursor.getString(cursor.getColumnIndex(SAVINGAMOUNT)).toDouble()
                 saving.desiredAmmount = cursor.getString(cursor.getColumnIndex(DESIREDAMOUNT)).toDouble()
                 saving.savingStartDateTime =cursor.getString(cursor.getColumnIndex(
                     SAVINGSTARTDATETIME))
@@ -145,6 +151,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DatabaseHand
         private val TABLE_NAME = "Savings"
         private val SAVINGID = "SavingId"
         private val SAVINGNAME = "SavingName"
+        private val SAVINGAMOUNT = "SavingAmount"
         private val MONTHLYSAVINGAMOUNT = "MonthlySavingAmount"
         private val DESIREDAMOUNT = "DesiredAmount"
         private val SAVINGSTARTDATETIME = "SavingStartDateTime"
