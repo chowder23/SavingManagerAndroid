@@ -8,12 +8,22 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.function.BooleanSupplier
 
-class Saving( var savingId:Int, var name:String, var monthlySavingAmount:Double, var desiredAmmount:Double):Serializable {
+class Saving( var name:String, var monthlySavingAmount:Double, var desiredAmmount:Double, var savingId:Int=0,var SavingStartAmount:Double= 0.0):Serializable {
     var savingStartDateTime =  DateTimeFormatter.ISO_INSTANT.format(Instant.now())
 
     private var elapsedMonths:Int = savingStartDateTime.toString().substring(5,7).toInt() -
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString().substring(5,7).toInt()
     private var savedAmount:Double=0.0
+
+    fun getDesiredAmount():Int
+    {
+        return desiredAmmount.toInt()
+    }
+
+    fun getSavingDateTime():String
+    {
+        return savingStartDateTime.toString().substring(0,10)
+    }
     fun toSaveFormat():String{
         return "$name|$monthlySavingAmount|$desiredAmmount|$savingStartDateTime"
     }
@@ -25,7 +35,7 @@ class Saving( var savingId:Int, var name:String, var monthlySavingAmount:Double,
 
     fun getSavingAmount():Double
     {
-        return monthlySavingAmount*elapsedMonths + savedAmount
+        return monthlySavingAmount*elapsedMonths + SavingStartAmount
     }
 
     fun getMonthsToReachGoal():Int

@@ -8,7 +8,6 @@ import Saving
 class SavingManager:Serializable {
 
     private var mySalary:Double = 0.0
-    var myFileManager = FileManager("BadBoy.txt")
     var savings = mutableListOf<Saving>()
 
     fun setMySalary(salary:Double)
@@ -31,19 +30,11 @@ class SavingManager:Serializable {
         return tmpSalary.toInt()
     }
 
-    fun InitFileManager(fileName:String)
+    fun addSaving(saving:Saving)
     {
-        myFileManager.setMyFile(fileName)
+        savings.add(saving)
     }
-
-    fun addNewSaving( name:String, monthlySavingAmount:Double, desiredAmount:Double)
-    {
-        val newSaving = Saving(nextId(),name,monthlySavingAmount,desiredAmount)
-        if(checkExistingSavingByName(newSaving)) throw ExistingSavingException(newSaving)
-        else savings.add(newSaving)
-    }
-
-    private fun nextId():Int
+     fun nextId():Int
     {
         var nextId:Int =0
         for (saving in savings)
@@ -69,11 +60,6 @@ class SavingManager:Serializable {
         return savingsNames
     }
 
-    fun Save()
-    {
-        checkInitialization()
-        myFileManager.saveDataToFile(getSavingsAsString())
-    }
 
     private fun getSavingsAsString():List<String>
     {
@@ -85,20 +71,6 @@ class SavingManager:Serializable {
         return savingsAsString
     }
 
-    private fun checkInitialization()
-    {
-        if(myFileManager.IsInitialized()) else throw FileManagerNotInitException()
-    }
-
-    fun Load()
-    {
-        checkInitialization()
-        for (line in myFileManager.loadDataFromFile())
-        {
-            var splittedLine = line.split('|')
-            addNewSaving(splittedLine[0],splittedLine[1].toDouble(),splittedLine[2].toDouble())
-        }
-    }
 
     fun addAmountToSaving(savingName:String,amount:Double)
     {

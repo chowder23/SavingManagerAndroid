@@ -8,7 +8,6 @@ import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import com.example.savingmanager.ui.main.SectionsPagerAdapter
 import Saving
 import android.app.Activity
 import android.content.ContentValues
@@ -17,39 +16,159 @@ import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.icu.util.UniversalTimeScale
 import android.provider.AlarmClock.EXTRA_MESSAGE
+import android.text.Editable
+import android.text.Layout
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.all_saving_layout.*
 import java.io.Serializable
+
 
 
 class MainActivity : AppCompatActivity() {
 
+<<<<<<< HEAD
     private lateinit var newSaveActivity: Button
     private lateinit var mySavingManager: SavingManager
+=======
+    val dbHandler:DatabaseHandler = DatabaseHandler(this)
+    var myProfile = Profile("",0.0)
+    var profileDB = ProfileDbHandler(this)
+    lateinit var listSaving:List<Saving>
+>>>>>>> TestingShitBranch
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        listSaving = dbHandler.getSavings()
         setContentView(R.layout.activity_main)
-        mySavingManager = SavingManager()
-        mySavingManager.InitFileManager("saves.txt")
-        newSaveActivity = findViewById(R.id.buttonMainActivityAddNewSaving)
+        startProfileActivity()
+        layoutInit()
+        RefreshData()
 
 
+<<<<<<< HEAD
         newSaveActivity.setOnClickListener()
         {
             val newSavingIntent = Intent(this, NewSavingPageActivity::class.java).apply {
                 putExtra("extra_object", mySavingManager as Serializable)
             }
+=======
+        buttonUpdate.setOnClickListener {
+            val saving = Saving(
+                editTextSavingName.text.toString(),
+                editTextMonthlyAmount.text.toString().toDouble(),
+                editTextDesiredAmount.text.toString().toDouble(),
+                Integer.parseInt(textViewSavingId.text.toString()),
+                editTextSavingAmount.text.toString().toDouble()
 
+            )
 
-
-            startActivity(newSavingIntent)
-
-            mySavingManager = newSavingIntent.getSerializableExtra("extra_object") as SavingManager
+            showToast(dbHandler.updateSaving(saving).toString())
+            RefreshData()
         }
+>>>>>>> TestingShitBranch
+
+        buttonDelete.setOnClickListener {
+            val saving = Saving(
+                editTextSavingName.text.toString(),
+                editTextMonthlyAmount.text.toString().toDouble(),
+                editTextDesiredAmount.text.toString().toDouble(),
+                Integer.parseInt(textViewSavingId.text.toString())
+            )
+            dbHandler.deleteSaving(saving)
+            RefreshData()
+        }
+
     }
+
+    fun startProfileActivity()
+    {
+        var profiles = profileDB.getProfiles()
+        if(profiles.isEmpty()) {
+            var intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+        else
+        {
+            myProfile = profiles[0]
+            actualizeSalary()
+        }
+
+    }
+
+    fun RefreshData()
+    {
+        listSaving = dbHandler.getSavings()
+        val adapter = ListSavingAdapter(this@MainActivity,listSaving,
+            editTextSavingName,
+            editTextSavingAmount,
+            editTextMonthlyAmount,
+            editTextDesiredAmount,
+            textViewSavingId)
+        listViewAllSaving.adapter=adapter
+
+    }
+    fun actualizeSalary()
+    {
+        var savings = dbHandler.getSavings()
+        for(saving in savings)
+        {
+            myProfile.salary-=saving.monthlySavingAmount
+        }
+        findViewById<TextView>(R.id.textViewProfileInfo).text = myProfile.toString()
+    }
+
+    fun layoutInit()
+    {
+        findViewById<View>(R.id.layoutMain).visibility = View.VISIBLE
+        findViewById<View>(R.id.layoutShowAllSaving).visibility =View.INVISIBLE
+        findViewById<View>(R.id.layoutAddNewSaving).visibility =View.INVISIBLE
+    }
+
+    fun changeToAddSavingLayout(view:View)
+    {
+        findViewById<View>(R.id.layoutMain).visibility = View.INVISIBLE
+        findViewById<View>(R.id.layoutAddNewSaving).visibility =View.VISIBLE
+    }
+
+    fun changeToShowAllSavingLayout(view:View)
+    {
+        findViewById<View>(R.id.layoutMain).visibility = View.INVISIBLE
+        findViewById<View>(R.id.layoutShowAllSaving).visibility =View.VISIBLE
+        RefreshData()
+
+        //var layoutAllSaving:ListView = findViewById(R.id.listViewAllSaving)
+       // layoutAllSaving.adapter=ArrayAdapter(this, android.R.layout.simple_list_item_1,dbHandler.getSavings())
+    }
+
+    fun addNewSaving(view:View)
+    {
+        val savingName = findViewById<EditText>(R.id.editTextSavingNameAdd).text.toString()
+        val monthlySavingAmount:Double = findViewById<EditText>(R.id.editTextSavingMonthlyAmount).text.toString().toDouble()
+        val desiredamount = findViewById<EditText>(R.id.editTextSavingDesiredAmount).text.toString().toDouble()
+        val saving = Saving(savingName,monthlySavingAmount,desiredamount)
+        findViewById<EditText>(R.id.editTextSavingNameAdd).text = "".toEditable()
+        findViewById<EditText>(R.id.editTextSavingMonthlyAmount).text = "".toEditable()
+        findViewById<EditText>(R.id.editTextSavingDesiredAmount).text = "".toEditable()
+        var succes = dbHandler.addSaving(saving)
+        showToast(if(succes) "Saving added" else "Can't add saving")
+
+    }
+
+    fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
+
+    fun showToast(message:String)
+    {
+        Toast.makeText(this,message,Toast.LENGTH_LONG).show()
+
+    }
+
+    fun changeToMainLayout(view: View)
+    {
+        layoutInit()
+    }
+
 
 }
