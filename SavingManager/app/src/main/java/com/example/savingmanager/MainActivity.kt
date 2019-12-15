@@ -30,15 +30,10 @@ import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
 
-<<<<<<< HEAD
-    private lateinit var newSaveActivity: Button
-    private lateinit var mySavingManager: SavingManager
-=======
     val dbHandler:DatabaseHandler = DatabaseHandler(this)
     var myProfile = Profile("",0.0)
     var profileDB = ProfileDbHandler(this)
     lateinit var listSaving:List<Saving>
->>>>>>> TestingShitBranch
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         listSaving = dbHandler.getSavings()
@@ -48,13 +43,6 @@ class MainActivity : AppCompatActivity() {
         RefreshData()
 
 
-<<<<<<< HEAD
-        newSaveActivity.setOnClickListener()
-        {
-            val newSavingIntent = Intent(this, NewSavingPageActivity::class.java).apply {
-                putExtra("extra_object", mySavingManager as Serializable)
-            }
-=======
         buttonUpdate.setOnClickListener {
             val saving = Saving(
                 editTextSavingName.text.toString(),
@@ -68,7 +56,6 @@ class MainActivity : AppCompatActivity() {
             showToast(dbHandler.updateSaving(saving).toString())
             RefreshData()
         }
->>>>>>> TestingShitBranch
 
         buttonDelete.setOnClickListener {
             val saving = Saving(
@@ -140,7 +127,7 @@ class MainActivity : AppCompatActivity() {
         RefreshData()
 
         //var layoutAllSaving:ListView = findViewById(R.id.listViewAllSaving)
-       // layoutAllSaving.adapter=ArrayAdapter(this, android.R.layout.simple_list_item_1,dbHandler.getSavings())
+        // layoutAllSaving.adapter=ArrayAdapter(this, android.R.layout.simple_list_item_1,dbHandler.getSavings())
     }
 
     fun addNewSaving(view:View)
